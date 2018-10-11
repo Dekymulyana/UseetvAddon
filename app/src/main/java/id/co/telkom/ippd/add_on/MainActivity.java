@@ -165,25 +165,25 @@ public class  MainActivity extends AppCompatActivity {
     }
 
     private void loadAIDL () {  //FUNGSI Choose AIDL
-            Log.d("NotifService", "loading AIDL");
-            if (getFiberhomeApiIndihomeId() != null && !getFiberhomeApiIndihomeId().isEmpty()){
-                useFiberhome = true;
-            } else if(getIndihomeIDZTE()){
-                Log.d("NotifService", "Your Using ZTE");
-                useZTE = true;
-            } else if(getIndihomeIDHuawei()){
-                useHuawei = true;
-            } else if(getIndihomeIDHuawei2()){
-                useHuawei2 = true;
-            }
-            else if(loadSTBIndihomeAIDL()){
-                useSTBTelkom = true;
-            }
-            else {
-                Log.d("NotifService", "IndihomeApi not exists");
-                Log.d("NotifService", "connect on loadAIDL");
-            }
+        Log.d("NotifService", "loading AIDL");
+        if (getFiberhomeApiIndihomeId() != null && !getFiberhomeApiIndihomeId().isEmpty()){
+            useFiberhome = true;
+        } else if(getIndihomeIDZTE()){
+            Log.d("NotifService", "Your Using ZTE");
+            useZTE = true;
+        } else if(getIndihomeIDHuawei()){
+            useHuawei = true;
+        } else if(getIndihomeIDHuawei2()){
+            useHuawei2 = true;
         }
+        else if(loadSTBIndihomeAIDL()){
+            useSTBTelkom = true;
+        }
+        else {
+            Log.d("NotifService", "IndihomeApi not exists");
+            Log.d("NotifService", "connect on loadAIDL");
+        }
+    }
 
     private boolean getIndihomeIDZTE(){
         if (zteIptvService != null){
@@ -384,36 +384,37 @@ public class  MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
-            if (mWebView.isFocused() && mWebView.canGoBack()) {
-                mWebView.goBack();
-            } else{
-                final Dialog dialogExit = new Dialog(MainActivity.this);
-                dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialogExit.setContentView(R.layout.dialogexit);
-                dialogExit.setCancelable(false);
-                TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
-                dialogExitText.setText("Apakah Anda Ingin Keluar Dari Aplikasi ?");
-                Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
-                dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MainActivity.this.finish();
-                        System.exit(0);
-                    }
-                });
+        if (mWebView.isFocused() && mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else{
+            final Dialog dialogExit = new Dialog(MainActivity.this);
+            dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogExit.setContentView(R.layout.dialogexit);
+            dialogExit.setCancelable(false);
+            TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
+            dialogExitText.setText("Apakah Anda Ingin Keluar Dari Aplikasi ?");
+            Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
+            dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity.this.finish();
+                    System.exit(0);
+                }
+            });
 
-                Button dialogButtonCancel = (Button) dialogExit.findViewById(R.id.buttonCancel);
-                dialogButtonCancel.setFocusable(true);
-                dialogButtonCancel.requestFocus();
-                dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogExit.dismiss();
-                    }
-                });
-                dialogExit.show();
-            }
+            Button dialogButtonCancel = (Button) dialogExit.findViewById(R.id.buttonCancel);
+            dialogButtonCancel.setFocusable(true);
+            dialogButtonCancel.requestFocus();
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogExit.dismiss();
+                }
+            });
+            dialogExit.show();
         }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -423,49 +424,49 @@ public class  MainActivity extends AppCompatActivity {
     private void callUrl (Uri uri){ //call URL
 
         try {
-                URL url = new URL(uri.toString());
-                setContentView(R.layout.activity_main);
-                mWebView = (WebView) findViewById(R.id.webview);
-                mWebView.getSettings().setJavaScriptEnabled(true);
-                mWebView.getSettings().setAppCacheEnabled(true);
-                mWebView.loadUrl(uri.toString());
+            URL url = new URL(uri.toString());
+            setContentView(R.layout.activity_main);
+            mWebView = (WebView) findViewById(R.id.webview);
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setAppCacheEnabled(true);
+            mWebView.loadUrl(uri.toString());
 
-                mWebView.setWebChromeClient(new WebChromeClient() {
-                    @Override
-                    public void onReceivedTitle(WebView view, String title) {
-                        super.onReceivedTitle(view, title);
-                        CharSequence pnotfound = "Object not found!";
-                        if (title.contains(pnotfound)) {
-                        }
+            mWebView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onReceivedTitle(WebView view, String title) {
+                    super.onReceivedTitle(view, title);
+                    CharSequence pnotfound = "Object not found!";
+                    if (title.contains(pnotfound)) {
                     }
-                });
-
-                mWebView.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
-                        webView.loadUrl(url_new);
-                        return true;
-                    }
-                    @Override
-                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                        setContentView(R.layout.layout_no_iptv);
-
-                        Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
-                        dialogButtonRefresh.setFocusable(true);
-                        dialogButtonRefresh.requestFocus();
-                        dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                recreate();
-                            }
-                        });
-                    }
-                });
                 }
+            });
 
-            catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            mWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
+                    webView.loadUrl(url_new);
+                    return true;
+                }
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    setContentView(R.layout.layout_no_iptv);
+
+                    Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
+                    dialogButtonRefresh.setFocusable(true);
+                    dialogButtonRefresh.requestFocus();
+                    dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            recreate();
+                        }
+                    });
+                }
+            });
         }
+
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
