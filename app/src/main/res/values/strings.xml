@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Indihome AddOn</string>
+    <string name="quit" />
+    <string name="really_quit" />
+    <string name="yes" />
+    <string name="no" />
+</resources>
