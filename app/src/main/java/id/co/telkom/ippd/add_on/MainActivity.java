@@ -384,9 +384,8 @@ public class  MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
-        if (mWebView.isFocused() && mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else{
+        String title=mWebView.getTitle();
+        if(title.equals("Home")){
             final Dialog dialogExit = new Dialog(MainActivity.this);
             dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogExit.setContentView(R.layout.dialogexit);
@@ -413,6 +412,9 @@ public class  MainActivity extends AppCompatActivity {
             });
             dialogExit.show();
         }
+        else if (mWebView.isFocused() && mWebView.canGoBack()) {
+            mWebView.goBack();
+        }
     }
 
     @Override
@@ -437,6 +439,15 @@ public class  MainActivity extends AppCompatActivity {
                     super.onReceivedTitle(view, title);
                     CharSequence pnotfound = "Object not found!";
                     if (title.contains(pnotfound)) {
+                        Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
+                        dialogButtonRefresh2.setFocusable(true);
+                        dialogButtonRefresh2.requestFocus();
+                        dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                recreate();
+                            }
+                        });
                     }
                 }
             });
@@ -449,7 +460,7 @@ public class  MainActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    setContentView(R.layout.layout_no_iptv);
+                    setContentView(R.layout.layout_cant_access);
 
                     Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
                     dialogButtonRefresh.setFocusable(true);
