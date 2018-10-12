@@ -423,61 +423,59 @@ public class  MainActivity extends AppCompatActivity {
 
     }
 
-    private void callUrl (Uri uri){ //call URL
+    private void callUrl (Uri uri) { //call URL
+            try {
+                URL url = new URL(uri.toString());
+                setContentView(R.layout.activity_main);
+                mWebView = (WebView) findViewById(R.id.webview);
+                mWebView.getSettings().setJavaScriptEnabled(true);
+                mWebView.getSettings().setAppCacheEnabled(true);
+                mWebView.loadUrl(uri.toString());
 
-        try {
-            URL url = new URL(uri.toString());
-            setContentView(R.layout.activity_main);
-            mWebView = (WebView) findViewById(R.id.webview);
-            mWebView.getSettings().setJavaScriptEnabled(true);
-            mWebView.getSettings().setAppCacheEnabled(true);
-            mWebView.loadUrl(uri.toString());
+                mWebView.setWebChromeClient(new WebChromeClient() {
+                    @Override
+                    public void onReceivedTitle(WebView view, String title) {
+                        super.onReceivedTitle(view, title);
+                        CharSequence pnotfound = "Object not found!";
+                        if (title.contains(pnotfound)) {
+                            setContentView(R.layout.layout_cant_access);
+                            Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
+                            dialogButtonRefresh2.setFocusable(true);
+                            dialogButtonRefresh2.requestFocus();
+                            dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    recreate();
+                                }
+                            });
+                        }
+                    }
+                });
 
-            mWebView.setWebChromeClient(new WebChromeClient() {
-                @Override
-                public void onReceivedTitle(WebView view, String title) {
-                    super.onReceivedTitle(view, title);
-                    CharSequence pnotfound = "Object not found!";
-                    if (title.contains(pnotfound)) {
-                        Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
-                        dialogButtonRefresh2.setFocusable(true);
-                        dialogButtonRefresh2.requestFocus();
-                        dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
+                mWebView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
+                        webView.loadUrl(url_new);
+                        return true;
+                    }
+
+                    @Override
+                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                        setContentView(R.layout.layout_no_iptv);
+                        Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
+                        dialogButtonRefresh.setFocusable(true);
+                        dialogButtonRefresh.requestFocus();
+                        dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 recreate();
                             }
                         });
                     }
-                }
-            });
-
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
-                    webView.loadUrl(url_new);
-                    return true;
-                }
-                @Override
-                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    setContentView(R.layout.layout_cant_access);
-
-                    Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
-                    dialogButtonRefresh.setFocusable(true);
-                    dialogButtonRefresh.requestFocus();
-                    dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            recreate();
-                        }
-                    });
-                }
-            });
+                });
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
-
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
