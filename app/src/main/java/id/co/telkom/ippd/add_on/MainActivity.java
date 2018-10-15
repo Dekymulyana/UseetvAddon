@@ -1,5 +1,6 @@
 package id.co.telkom.ippd.add_on;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;

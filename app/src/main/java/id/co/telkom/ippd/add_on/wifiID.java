@@ -58,7 +58,7 @@ public class wifiID extends AppCompatActivity {
     public String vendor;
 
     //var url parameter
-    public String LOAD_BASE_URL = "http://10.0.8.56/addon/wifiidSeamless/";
+    public String LOAD_BASE_URL = "http://10.0.8.56/addon/wifiid/";
     final String ID_IH = "indihome_id";
     final String Source = "source";
     Uri builtUri;
@@ -384,36 +384,14 @@ public class wifiID extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
-        String title=mWebView.getTitle();
-        if(title.equals("wifi.id Seamless")){
-            final Dialog dialogExit = new Dialog(wifiID.this);
-            dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialogExit.setContentView(R.layout.dialogexit);
-            dialogExit.setCancelable(false);
-            TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
-            dialogExitText.setText("Apakah Anda Ingin Keluar Dari Aplikasi ?");
-            Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
-            dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    wifiID.this.finish();
-                    System.exit(0);
-                }
-            });
-
-            Button dialogButtonCancel = (Button) dialogExit.findViewById(R.id.buttonCancel);
-            dialogButtonCancel.setFocusable(true);
-            dialogButtonCancel.requestFocus();
-            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialogExit.dismiss();
-                }
-            });
-            dialogExit.show();
-        }
-        else if (mWebView.isFocused() && mWebView.canGoBack()) {
+        if (mWebView.isFocused() && mWebView.canGoBack()) {
             mWebView.goBack();
+        }
+
+        else{
+            wifiID.this.finish();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }
     }
 
