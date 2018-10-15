@@ -2,6 +2,8 @@ package id.co.telkom.ippd.add_on;
 
 import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -431,9 +433,6 @@ public class  MainActivity extends AppCompatActivity {
                 mWebView = (WebView) findViewById(R.id.webview);
                 mWebView.getSettings().setJavaScriptEnabled(true);
                 mWebView.getSettings().setAppCacheEnabled(true);
-                mWebView.loadUrl(uri.toString());
-                //Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
-
                 mWebView.setWebChromeClient(new WebChromeClient() {
                     @Override
                     public void onReceivedTitle(WebView view, String title) {
@@ -474,7 +473,9 @@ public class  MainActivity extends AppCompatActivity {
                             }
                         });
                     }
+
                 });
+                mWebView.loadUrl(uri.toString());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
