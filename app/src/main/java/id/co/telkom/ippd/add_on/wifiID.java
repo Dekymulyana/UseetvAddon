@@ -1,47 +1,47 @@
 package id.co.telkom.ippd.add_on;
 
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v4.util.ArrayMap;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.Build;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.net.Uri;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import net.sunniwell.app.ott.huawei.service.IPTV;
+import android.widget.Toast;
 
 import com.huawei.iptv.stb.fordataaccess.IForDataAccess;
 
-import java.util.Map;
-import id.co.telkom.ippd.stbinterface.TelkomSTB;
-import ztestb.iptv.aidl.ServiceIPTVAidl;
-
-import android.widget.Toast;
+import net.sunniwell.app.ott.huawei.service.IPTV;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+
+import id.co.telkom.ippd.stbinterface.TelkomSTB;
+import ztestb.iptv.aidl.ServiceIPTVAidl;
+
 /**
  * Created by Deky's on 8/10/2018.
  */
 
-public class  MainActivity extends AppCompatActivity {
+public class wifiID extends AppCompatActivity {
 
     //var indihome ID
     private ServiceIPTVAidl zteIptvService = null;
@@ -58,7 +58,7 @@ public class  MainActivity extends AppCompatActivity {
     public String vendor;
 
     //var url parameter
-    public String LOAD_BASE_URL = "http://10.0.8.56/addon/";
+    public String LOAD_BASE_URL = "http://10.0.8.56/addon/wifiidSeamless/";
     final String ID_IH = "indihome_id";
     final String Source = "source";
     Uri builtUri;
@@ -72,7 +72,7 @@ public class  MainActivity extends AppCompatActivity {
     private WebView mWebView;
     private TextView urlText;
 
-    public MainActivity() throws MalformedURLException {
+    public wifiID() throws MalformedURLException {
     }
 
     @Override
@@ -137,7 +137,7 @@ public class  MainActivity extends AppCompatActivity {
             }
             else if (Float.parseFloat(currentVersion) < Float.parseFloat(updateVersion))
             {
-                final Dialog dialogUpdate = new Dialog(MainActivity.this);
+                final Dialog dialogUpdate = new Dialog(wifiID.this);
                 dialogUpdate.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogUpdate.setContentView(R.layout.dialogupdate);
                 dialogUpdate.setCancelable(false);
@@ -207,7 +207,7 @@ public class  MainActivity extends AppCompatActivity {
             }
         }else{
             try{
-                return bindService(new Intent(ztestb.iptv.aidl.ServiceIPTVAidl.class.getName()), iptvServiceConnection, BIND_AUTO_CREATE);
+                return bindService(new Intent(ServiceIPTVAidl.class.getName()), iptvServiceConnection, BIND_AUTO_CREATE);
             }catch (IllegalArgumentException ex){
                 ex.printStackTrace();
             }
@@ -270,7 +270,7 @@ public class  MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             try{
                 Log.d("NotifService", "loading STB Indihome AIDL");
-                Intent intent = new Intent(id.co.telkom.ippd.stbinterface.TelkomSTB.class.getName());
+                Intent intent = new Intent(TelkomSTB.class.getName());
                 intent.setPackage("id.co.inovasiriset.tvms.stbinterface.implementation");
                 boolean retval = bindService(intent, iptvServiceConnection, BIND_AUTO_CREATE);
                 return retval;
@@ -279,7 +279,7 @@ public class  MainActivity extends AppCompatActivity {
             }
         }else{
             try{
-                bindService(new Intent(id.co.telkom.ippd.stbinterface.TelkomSTB.class.getName()), iptvServiceConnection, BIND_AUTO_CREATE);
+                bindService(new Intent(TelkomSTB.class.getName()), iptvServiceConnection, BIND_AUTO_CREATE);
             }catch (IllegalArgumentException ex){
                 ex.printStackTrace();
             }
@@ -385,8 +385,8 @@ public class  MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed () {
         String title=mWebView.getTitle();
-        if(title.equals("Home")){
-            final Dialog dialogExit = new Dialog(MainActivity.this);
+        if(title.equals("wifi.id Seamless")){
+            final Dialog dialogExit = new Dialog(wifiID.this);
             dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogExit.setContentView(R.layout.dialogexit);
             dialogExit.setCancelable(false);
@@ -396,7 +396,7 @@ public class  MainActivity extends AppCompatActivity {
             dialogButtonOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainActivity.this.finish();
+                    wifiID.this.finish();
                     System.exit(0);
                 }
             });
@@ -424,59 +424,58 @@ public class  MainActivity extends AppCompatActivity {
     }
 
     private void callUrl (Uri uri) { //call URL
-            try {
-                URL url = new URL(uri.toString());
-                setContentView(R.layout.activity_main);
-                mWebView = (WebView) findViewById(R.id.webview);
-                mWebView.getSettings().setJavaScriptEnabled(true);
-                mWebView.getSettings().setAppCacheEnabled(true);
-                mWebView.loadUrl(uri.toString());
-                //Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+        try {
+            URL url = new URL(uri.toString());
+            setContentView(R.layout.activity_main);
+            mWebView = (WebView) findViewById(R.id.webview);
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setAppCacheEnabled(true);
+            mWebView.loadUrl(uri.toString());
 
-                mWebView.setWebChromeClient(new WebChromeClient() {
-                    @Override
-                    public void onReceivedTitle(WebView view, String title) {
-                        super.onReceivedTitle(view, title);
-                        CharSequence pnotfound = "Object not found!";
-                        if (title.contains(pnotfound)) {
-                            setContentView(R.layout.layout_cant_access);
-                            Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
-                            dialogButtonRefresh2.setFocusable(true);
-                            dialogButtonRefresh2.requestFocus();
-                            dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    recreate();
-                                }
-                            });
-                        }
-                    }
-                });
-
-                mWebView.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
-                        webView.loadUrl(url_new);
-                        return true;
-                    }
-
-                    @Override
-                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                        setContentView(R.layout.layout_no_iptv);
-                        Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
-                        dialogButtonRefresh.setFocusable(true);
-                        dialogButtonRefresh.requestFocus();
-                        dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
+            mWebView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onReceivedTitle(WebView view, String title) {
+                    super.onReceivedTitle(view, title);
+                    CharSequence pnotfound = "Object not found!";
+                    if (title.contains(pnotfound)) {
+                        setContentView(R.layout.layout_cant_access);
+                        Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
+                        dialogButtonRefresh2.setFocusable(true);
+                        dialogButtonRefresh2.requestFocus();
+                        dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 recreate();
                             }
                         });
                     }
-                });
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+                }
+            });
+
+            mWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
+                    webView.loadUrl(url_new);
+                    return true;
+                }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    setContentView(R.layout.layout_no_iptv);
+                    Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
+                    dialogButtonRefresh.setFocusable(true);
+                    dialogButtonRefresh.requestFocus();
+                    dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            recreate();
+                        }
+                    });
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+    }
 
 }
