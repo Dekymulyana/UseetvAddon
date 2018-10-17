@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/MyTheme"
-    android:background="@drawable/cat">
+    android:background="@drawable/background">
 
     <WebView
     android:id="@+id/webview"

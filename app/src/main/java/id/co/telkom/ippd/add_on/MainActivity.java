@@ -147,7 +147,7 @@ public class  MainActivity extends AppCompatActivity {
                 dialogUpdate.setContentView(R.layout.dialogupdate);
                 dialogUpdate.setCancelable(false);
                 TextView dialogExitText = (TextView) dialogUpdate.findViewById(R.id.textdialog3);
-                dialogExitText.setText("Silahkan Perbarui Aplikasi Anda");
+                dialogExitText.setText("Silahkan perbarui aplikasi anda");
                 Button dialogButtonUpdate = (Button) dialogUpdate.findViewById(R.id.buttonUpdate);
                 dialogButtonUpdate.setFocusable(true);
                 dialogButtonUpdate.requestFocus();
@@ -396,7 +396,7 @@ public class  MainActivity extends AppCompatActivity {
             dialogExit.setContentView(R.layout.dialogexit);
             dialogExit.setCancelable(false);
             TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
-            dialogExitText.setText("Apakah Anda Ingin Keluar Dari Aplikasi ?");
+            dialogExitText.setText("Apakah anda yakin ingin keluar dari aplikasi ?");
             Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
             dialogButtonOk.setOnClickListener(new View.OnClickListener() {
                 @Override

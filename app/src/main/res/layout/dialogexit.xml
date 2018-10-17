@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="#FFF"
+    android:layout_gravity="center_vertical|center_horizontal|center"
+    android:background="@drawable/dialog_frame"
     android:orientation="vertical">
 
     <TextView
@@ -12,43 +13,46 @@
         android:layout_gravity="center_vertical|center_horizontal|center"
         android:background="#FFF"
         android:paddingTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text=""
         android:textColor="@android:color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"></TextView>
+        android:textSize="20dp">
+    </TextView>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="#FFF"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal|center|fill"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#FFF"
+        android:gravity="center_vertical|center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/buttonCancel"
-            android:layout_width="250dp"
-            android:layout_height="55dp"
+            android:layout_width="146dp"
+            android:layout_height="50dp"
             android:background="@drawable/selectorbutton"
             android:clickable="true"
             android:text="Tidak"
-            android:textSize="20dp"
             android:textColor="@drawable/selectortextbutton"
+            android:textSize="20dp"
             />
 
         <Button
             android:id="@+id/buttonOK"
-            android:layout_width="250dp"
-            android:layout_height="55dp"
+            android:layout_width="147dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/selectorbutton"
             android:clickable="true"
-            android:text="Ya"
-            android:textSize="20dp"
+            android:text="Yakin"
             android:textColor="@drawable/selectortextbutton"
+            android:textSize="20dp"
             />
     </LinearLayout>
 

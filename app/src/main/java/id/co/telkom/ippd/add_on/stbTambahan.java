@@ -142,7 +142,7 @@ public class stbTambahan extends AppCompatActivity {
                 dialogUpdate.setContentView(R.layout.dialogupdate);
                 dialogUpdate.setCancelable(false);
                 TextView dialogExitText = (TextView) dialogUpdate.findViewById(R.id.textdialog3);
-                dialogExitText.setText("Silahkan Perbarui Aplikasi Anda");
+                dialogExitText.setText("Silahkan perbarui aplikasi anda");
                 Button dialogButtonUpdate = (Button) dialogUpdate.findViewById(R.id.buttonUpdate);
                 dialogButtonUpdate.setFocusable(true);
                 dialogButtonUpdate.requestFocus();
