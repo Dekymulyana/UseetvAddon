@@ -390,7 +390,7 @@ public class tvStorage extends AppCompatActivity {
 
         else{
             tvStorage.this.finish();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
             startActivity(intent);
         }
     }

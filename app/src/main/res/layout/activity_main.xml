@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/MyTheme" >
+    android:theme="@style/MyTheme"
+    android:background="@drawable/cat">
 
     <WebView
     android:id="@+id/webview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="invisible"
     />
     <!--
     <TextView
