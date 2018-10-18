@@ -23,6 +23,7 @@ import android.os.RemoteException;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.net.Uri;
 
@@ -33,6 +34,8 @@ import net.sunniwell.app.ott.huawei.service.IPTV;
 import com.huawei.iptv.stb.fordataaccess.IForDataAccess;
 
 import java.util.Map;
+import java.util.Timer;
+
 import id.co.telkom.ippd.stbinterface.TelkomSTB;
 import ztestb.iptv.aidl.ServiceIPTVAidl;
 
@@ -76,6 +79,7 @@ public class  MainActivity extends AppCompatActivity {
     //var activity main xml
     private WebView mWebView;
     private TextView urlText;
+    private  ProgressBar mProgress;
 
     public MainActivity() throws MalformedURLException {
     }
@@ -126,7 +130,8 @@ public class  MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),"Json parsing error: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplicationContext(),"Json parsing error: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                            Log.d("NotifService", "JSON Parsing Error");
                         }
                     });
                 }
@@ -389,7 +394,13 @@ public class  MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
+        //==================================================================
+        //Start on Pressed Code
+        //==================================================================
         String title=mWebView.getTitle();
+        //==================================================================
+        //Home
+        //==================================================================
         if(title.equals("Home")){
             final Dialog dialogExit = new Dialog(MainActivity.this);
             dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -417,15 +428,142 @@ public class  MainActivity extends AppCompatActivity {
             });
             dialogExit.show();
         }
+        //==================================================================
+        //FLOW tv Storage
+        //==================================================================
+        else if(title.equals("tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        //==================================================================
+        //WIFIID FLOW
+        //==================================================================
+        else if(title.equals("wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        //==================================================================
+        //FLOW Stb Tambahan
+        //==================================================================
+        else if(title.equals("stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        /*//==================================================================
+        //Back Usually
+        //==================================================================
         else if (mWebView.isFocused() && mWebView.canGoBack()) {
             mWebView.goBack();
-        }
+        }*/
+
+        //==================================================================
+        //End on Pressed Code
+        //==================================================================
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        System.exit(0);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method firs
+        System.exit(0);
     }
 
     private void callUrl (Uri uri) { //call URL

@@ -94,19 +94,16 @@ public class tvStorage extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
-            String final_url = linkAptoide+BuildConfig.APPLICATION_ID;
+            String final_url = linkAptoide + BuildConfig.APPLICATION_ID;
             String jsonStr = sh.makeServiceCall(final_url);
 
-            if (jsonStr == null){
+            if (jsonStr == null) {
                 Log.d("NotifService", "Couldn't get json from server. Check LogCat for possible errors!");
-                updateVersion=currentVersion;
-            }
-
-            else if (jsonStr.equals("error")){
+                updateVersion = currentVersion;
+            } else if (jsonStr.equals("error")) {
                 Log.d("NotifService", "URL Not Valid");
-                updateVersion=currentVersion;
-            }
-            else{
+                updateVersion = currentVersion;
+            } else {
                 try {
                     JSONObject parentObject = new JSONObject(jsonStr);
                     JSONObject parent2object = parentObject.getJSONObject("nodes");
@@ -115,13 +112,12 @@ public class tvStorage extends AppCompatActivity {
                     JSONObject array5Object = parent4Array.getJSONObject(0);
                     JSONObject parent6object = array5Object.getJSONObject("file");
                     updateVersion = parent6object.getString("vername");
-                }
-                catch (final JSONException e) {
+                } catch (final JSONException e) {
                     // Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),"Json parsing error: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Json parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -133,10 +129,8 @@ public class tvStorage extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            if (Float.parseFloat(currentVersion) == Float.parseFloat(updateVersion)){
-            }
-            else if (Float.parseFloat(currentVersion) < Float.parseFloat(updateVersion))
-            {
+            if (Float.parseFloat(currentVersion) == Float.parseFloat(updateVersion)) {
+            } else if (Float.parseFloat(currentVersion) < Float.parseFloat(updateVersion)) {
                 final Dialog dialogUpdate = new Dialog(tvStorage.this);
                 dialogUpdate.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogUpdate.setContentView(R.layout.dialogupdate);
@@ -150,7 +144,8 @@ public class tvStorage extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("aptoidetv://cm.aptoidetv.pt.useeapps/appview?package=" + BuildConfig.APPLICATION_ID));
-                        startActivity(intent); }
+                        startActivity(intent);
+                    }
                 });
                 Button dialogButtonExit = (Button) dialogUpdate.findViewById(R.id.buttonClose);
                 dialogButtonExit.setOnClickListener(new View.OnClickListener() {
@@ -164,132 +159,130 @@ public class tvStorage extends AppCompatActivity {
         }
     }
 
-    private void loadAIDL () {  //FUNGSI Choose AIDL
+    private void loadAIDL() {  //FUNGSI Choose AIDL
         Log.d("NotifService", "loading AIDL");
-        if (getFiberhomeApiIndihomeId() != null && !getFiberhomeApiIndihomeId().isEmpty()){
+        if (getFiberhomeApiIndihomeId() != null && !getFiberhomeApiIndihomeId().isEmpty()) {
             useFiberhome = true;
-        } else if(getIndihomeIDZTE()){
+        } else if (getIndihomeIDZTE()) {
             Log.d("NotifService", "Your Using ZTE");
             useZTE = true;
-        } else if(getIndihomeIDHuawei()){
+        } else if (getIndihomeIDHuawei()) {
             useHuawei = true;
-        } else if(getIndihomeIDHuawei2()){
+        } else if (getIndihomeIDHuawei2()) {
             useHuawei2 = true;
-        }
-        else if(loadSTBIndihomeAIDL()){
+        } else if (loadSTBIndihomeAIDL()) {
             useSTBTelkom = true;
-        }
-        else {
+        } else {
             Log.d("NotifService", "IndihomeApi not exists");
             Log.d("NotifService", "connect on loadAIDL");
         }
     }
 
-    private boolean getIndihomeIDZTE(){
-        if (zteIptvService != null){
+    private boolean getIndihomeIDZTE() {
+        if (zteIptvService != null) {
             return true;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            try{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
                 Intent intent = new Intent(ServiceIPTVAidl.class.getName());
                 intent.setPackage("com.itv.android.iptv");
 
                 boolean retval = bindService(intent, iptvServiceConnection, BIND_AUTO_CREATE);
 
-                if (!retval){
+                if (!retval) {
                     Intent intent2 = new Intent("ztestb.iptv.aidl.ServiceIPTVAidl");
                     intent2.setPackage("ztestb.iptv.aidl");
                     retval = bindService(intent2, iptvServiceConnection, BIND_AUTO_CREATE);
                 }
                 return retval;
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
-        }else{
-            try{
+        } else {
+            try {
                 return bindService(new Intent(ServiceIPTVAidl.class.getName()), iptvServiceConnection, BIND_AUTO_CREATE);
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
         }
         return false;
     }
 
-    private boolean getIndihomeIDHuawei(){
-        if (huaweiIptvService != null){
+    private boolean getIndihomeIDHuawei() {
+        if (huaweiIptvService != null) {
             return true;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            try{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
                 Intent intent = new Intent("net.sunniwell.app.ott.huawei.service.IPTV");
                 intent.setPackage("net.sunniwell.app.ott.huawei.service");
                 boolean retval = bindService(intent, iptvServiceConnection, BIND_AUTO_CREATE);
                 return retval;
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
-        }else{
-            try{
+        } else {
+            try {
                 return bindService(new Intent("net.sunniwell.app.ott.huawei.service.remote"), iptvServiceConnection, BIND_AUTO_CREATE);
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
         }
         return false;
     }
 
-    private boolean getIndihomeIDHuawei2(){
-        if (huaweiIptvService != null){
+    private boolean getIndihomeIDHuawei2() {
+        if (huaweiIptvService != null) {
             return true;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            try{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
                 Intent intent = new Intent();
-                intent.setClassName("com.huawei.iptv.stb","com.huawei.iptv.stb.fordataaccess.ForDataAccess");
+                intent.setClassName("com.huawei.iptv.stb", "com.huawei.iptv.stb.fordataaccess.ForDataAccess");
                 boolean retval = bindService(intent, iptvServiceConnection, BIND_AUTO_CREATE);
                 return retval;
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
-        }else{
-            try{
+        } else {
+            try {
                 Intent intent = new Intent();
-                intent.setClassName("com.huawei.iptv.stb","com.huawei.iptv.stb.fordataaccess.ForDataAccess");
+                intent.setClassName("com.huawei.iptv.stb", "com.huawei.iptv.stb.fordataaccess.ForDataAccess");
                 return bindService(intent, iptvServiceConnection, BIND_AUTO_CREATE);
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
         }
         return false;
     }
 
-    private boolean loadSTBIndihomeAIDL(){
-        if (telkomSTB != null){
+    private boolean loadSTBIndihomeAIDL() {
+        if (telkomSTB != null) {
             return true;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            try{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
                 Log.d("NotifService", "loading STB Indihome AIDL");
                 Intent intent = new Intent(TelkomSTB.class.getName());
                 intent.setPackage("id.co.inovasiriset.tvms.stbinterface.implementation");
                 boolean retval = bindService(intent, iptvServiceConnection, BIND_AUTO_CREATE);
                 return retval;
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
-        }else{
-            try{
+        } else {
+            try {
                 bindService(new Intent(TelkomSTB.class.getName()), iptvServiceConnection, BIND_AUTO_CREATE);
-            }catch (IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
         }
         return false;
     }
 
-    private String getFiberhomeApiIndihomeId(){
-        try{
-            String fiberhomeIndihomeId = SystemPropertiesProxy.get(getApplicationContext(),"sys.Indihome.username");
+    private String getFiberhomeApiIndihomeId() {
+        try {
+            String fiberhomeIndihomeId = SystemPropertiesProxy.get(getApplicationContext(), "sys.Indihome.username");
 
             if (fiberhomeIndihomeId != null) {
                 id_ih = SystemPropertiesProxy.get(getApplicationContext(), "sys.Indihome.username");
@@ -299,12 +292,11 @@ public class tvStorage extends AppCompatActivity {
                         .appendQueryParameter(Source, vendor)
                         .build();
                 callUrl(builtUri);
-            }
-            else{
+            } else {
                 return null;
             }
             return fiberhomeIndihomeId;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -313,11 +305,11 @@ public class tvStorage extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             Log.d("NotifService", "component name: " + componentName.flattenToString());
-            if (iBinder == null){
+            if (iBinder == null) {
                 Log.d("NotifService", "STB IBinder == null");
             }
 
-            if (useZTE){
+            if (useZTE) {
                 zteIptvService = ServiceIPTVAidl.Stub.asInterface(iBinder);
                 try {
                     id_ih = zteIptvService.getIPTVPlatFormUser();
@@ -330,7 +322,7 @@ public class tvStorage extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            }else if (useHuawei){
+            } else if (useHuawei) {
                 huaweiIptvService = IPTV.Stub.asInterface(iBinder);
                 try {
                     id_ih = huaweiIptvService.getParam("ntvuseraccount", 0);
@@ -343,7 +335,7 @@ public class tvStorage extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            }else if (useHuawei2){
+            } else if (useHuawei2) {
                 huaweiIptvService2 = IForDataAccess.Stub.asInterface(iBinder);
                 try {
                     id_ih = huaweiIptvService2.getValue("Iptv.AccountID");
@@ -357,7 +349,7 @@ public class tvStorage extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            }else if (useSTBTelkom){
+            } else if (useSTBTelkom) {
                 telkomSTB = TelkomSTB.Stub.asInterface(iBinder);
                 try {
                     id_ih = telkomSTB.getIndihomeId();
@@ -384,21 +376,175 @@ public class tvStorage extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
-        if (mWebView.isFocused() && mWebView.canGoBack()) {
-            mWebView.goBack();
-        }
+        //==================================================================
+        //Start on Pressed Code
+        //==================================================================
+        String title=mWebView.getTitle();
+        //==================================================================
+        //Home
+        //==================================================================
+        if(title.equals("Home")){
+            final Dialog dialogExit = new Dialog(tvStorage.this);
+            dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogExit.setContentView(R.layout.dialogexit);
+            dialogExit.setCancelable(false);
+            TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
+            dialogExitText.setText("Apakah anda yakin ingin keluar dari aplikasi ?");
+            Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
+            dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tvStorage.this.finish();
+                    System.exit(0);
+                }
+            });
 
-        else{
-            tvStorage.this.finish();
-            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-            startActivity(intent);
+            Button dialogButtonCancel = (Button) dialogExit.findViewById(R.id.buttonCancel);
+            dialogButtonCancel.setFocusable(true);
+            dialogButtonCancel.requestFocus();
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogExit.dismiss();
+                }
+            });
+            dialogExit.show();
         }
+        //==================================================================
+        //FLOW tv Storage
+        //==================================================================
+        else if(title.equals("tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        //==================================================================
+        //WIFIID FLOW
+        //==================================================================
+        else if(title.equals("wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        //==================================================================
+        //FLOW Stb Tambahan
+        //==================================================================
+        else if(title.equals("stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        /*//==================================================================
+        //Back Usually
+        //==================================================================
+        else if (mWebView.isFocused() && mWebView.canGoBack()) {
+            mWebView.goBack();
+        }*/
+
+        //==================================================================
+        //End on Pressed Code
+        //==================================================================
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method firs
+        System.exit(0);
     }
 
     private void callUrl (Uri uri) { //call URL
@@ -449,6 +595,10 @@ public class tvStorage extends AppCompatActivity {
                             recreate();
                         }
                     });
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    mWebView.setVisibility(View.VISIBLE);
                 }
             });
         } catch (MalformedURLException e) {

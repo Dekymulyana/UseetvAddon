@@ -384,20 +384,175 @@ public class stbTambahan extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
-        if (mWebView.isFocused() && mWebView.canGoBack()) {
-            mWebView.goBack();
-        }
+        //==================================================================
+        //Start on Pressed Code
+        //==================================================================
+        String title=mWebView.getTitle();
+        //==================================================================
+        //Home
+        //==================================================================
+        if(title.equals("Home")){
+            final Dialog dialogExit = new Dialog(stbTambahan.this);
+            dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogExit.setContentView(R.layout.dialogexit);
+            dialogExit.setCancelable(false);
+            TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
+            dialogExitText.setText("Apakah anda yakin ingin keluar dari aplikasi ?");
+            Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
+            dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    stbTambahan.this.finish();
+                    System.exit(0);
+                }
+            });
 
-        else{
-            stbTambahan.this.finish();
-            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-            startActivity(intent);
+            Button dialogButtonCancel = (Button) dialogExit.findViewById(R.id.buttonCancel);
+            dialogButtonCancel.setFocusable(true);
+            dialogButtonCancel.requestFocus();
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogExit.dismiss();
+                }
+            });
+            dialogExit.show();
         }
+        //==================================================================
+        //FLOW tv Storage
+        //==================================================================
+        else if(title.equals("tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-tvStorage")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        //==================================================================
+        //WIFIID FLOW
+        //==================================================================
+        else if(title.equals("wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-wifiid")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        //==================================================================
+        //FLOW Stb Tambahan
+        //==================================================================
+        else if(title.equals("stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("detilPembelian-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("verifikasiOtp-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("completePembelian-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-stbTambahan")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        /*//==================================================================
+        //Back Usually
+        //==================================================================
+        else if (mWebView.isFocused() && mWebView.canGoBack()) {
+            mWebView.goBack();
+        }*/
+
+        //==================================================================
+        //End on Pressed Code
+        //==================================================================
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method firs
+        System.exit(0);
     }
 
     private void callUrl (Uri uri) { //call URL
@@ -448,6 +603,10 @@ public class stbTambahan extends AppCompatActivity {
                             recreate();
                         }
                     });
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    mWebView.setVisibility(View.VISIBLE);
                 }
             });
         } catch (MalformedURLException e) {
