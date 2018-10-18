@@ -1,12 +1,7 @@
 package id.co.telkom.ippd.add_on;
 
-import android.app.ActivityManager;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,7 +30,6 @@ import net.sunniwell.app.ott.huawei.service.IPTV;
 import com.huawei.iptv.stb.fordataaccess.IForDataAccess;
 
 import java.util.Map;
-import java.util.Timer;
 
 import id.co.telkom.ippd.stbinterface.TelkomSTB;
 import ztestb.iptv.aidl.ServiceIPTVAidl;
@@ -83,7 +77,6 @@ public class  MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     public MainActivity() throws MalformedURLException {
-
     }
 
     @Override
@@ -100,6 +93,7 @@ public class  MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressBar.setMax(100);
+            new VersionCheck().execute();
         }
 
         protected Void doInBackground(Integer... params) {
@@ -109,12 +103,12 @@ public class  MainActivity extends AppCompatActivity {
                SystemClock.sleep(500);
             }
             progressBar.setProgress(100);
+            loadAIDL();
             return null;
         }
 
         protected void onPostExecute(Void result) {
-            loadAIDL();
-            new VersionCheck().execute();
+
         }
     }
 
@@ -329,11 +323,12 @@ public class  MainActivity extends AppCompatActivity {
             if (fiberhomeIndihomeId != null) {
                 id_ih = SystemPropertiesProxy.get(getApplicationContext(), "sys.Indihome.username");
                 vendor = "fiberhome";
-                builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
-                        .appendQueryParameter(ID_IH, id_ih)
-                        .appendQueryParameter(Source, vendor)
-                        .build();
-                callUrl(builtUri);
+                    builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
+                            .appendQueryParameter(ID_IH, id_ih)
+                            .appendQueryParameter(Source, vendor)
+                            .build();
+                    callUrl(builtUri);
+
             }
             else{
                 return null;
@@ -388,7 +383,6 @@ public class  MainActivity extends AppCompatActivity {
                             .appendQueryParameter(Source, vendor)
                             .build();
                     callUrl(builtUri);
-
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -419,10 +413,11 @@ public class  MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
+        String title= mWebView.getTitle();
+        int pemisah = title.indexOf("-");
+        String back = title.substring(pemisah+1, title.length());
         //==================================================================
         //Start on Pressed Code
-        //==================================================================
-        String title=mWebView.getTitle();
         //==================================================================
         //Home
         //==================================================================
@@ -453,9 +448,11 @@ public class  MainActivity extends AppCompatActivity {
             });
             dialogExit.show();
         }
+
         //==================================================================
-        //FLOW tv Storage
+        //First Page
         //==================================================================
+
         else if(title.equals("tvStorage")){
             builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
@@ -463,75 +460,7 @@ public class  MainActivity extends AppCompatActivity {
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
-        else if(title.equals("detilPembelian-tvStorage")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("verifikasiOtp-tvStorage")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("completePembelian-tvStorage")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("gantiNomor-tvStorage")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/tvStorage").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        //==================================================================
-        //WIFIID FLOW
-        //==================================================================
-        else if(title.equals("wifiid")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("detilPembelian-wifiid")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("verifikasiOtp-wifiid")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("completePembelian-wifiid")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("gantiNomor-wifiid")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/wifiid").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        //==================================================================
-        //FLOW Stb Tambahan
-        //==================================================================
+
         else if(title.equals("stbTambahan")){
             builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
@@ -539,29 +468,56 @@ public class  MainActivity extends AppCompatActivity {
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
-        else if(title.equals("detilPembelian-stbTambahan")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+
+        else if(title.equals("wifiid")) {
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
-        else if(title.equals("verifikasiOtp-stbTambahan")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+
+        //==================================================================
+        //Detail Flow
+        //==================================================================
+
+        else if(title.equals("detilPembelian-"+back)){
+            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
-        else if(title.equals("completePembelian-stbTambahan")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+        else if(title.equals("verifikasiOtp-"+back)){
+            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
-        else if(title.equals("gantiNomor-stbTambahan")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/stbTambahan").buildUpon()
+        else if(title.equals("completePembelian-"+back)){
+            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("gantiNomor-"+back)){
+            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("error-"+back)){
+            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+        else if(title.equals("sukses-"+back)){
+            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -573,7 +529,6 @@ public class  MainActivity extends AppCompatActivity {
         else if (mWebView.isFocused() && mWebView.canGoBack()) {
             mWebView.goBack();
         }*/
-
         //==================================================================
         //End on Pressed Code
         //==================================================================
@@ -594,8 +549,6 @@ public class  MainActivity extends AppCompatActivity {
     private void callUrl (Uri uri) { //call URL
             try {
                 URL url = new URL(uri.toString());
-                setContentView(R.layout.activity_main);
-                mWebView = (WebView) findViewById(R.id.webview);
                 mWebView.getSettings().setJavaScriptEnabled(true);
                 mWebView.getSettings().setAppCacheEnabled(true);
                 mWebView.setWebChromeClient(new WebChromeClient() {
