@@ -24,22 +24,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <intent-filter>
-                <action android:name="id.co.telkom.ippd.indihome.addon.mainfunction"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
 
         <activity
             android:name=".tvStorage"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <intent-filter>
                 <action android:name="id.co.telkom.ippd.indihome.addon.tvstorage"/>
@@ -53,11 +43,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter>
                 <action android:name="id.co.telkom.ippd.indihome.addon.wifiid"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -67,12 +52,6 @@
             android:name=".stbTambahan"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
             <intent-filter>
                 <action android:name="id.co.telkom.ippd.indihome.addon.stbtambahan"/>
                 <category android:name="android.intent.category.DEFAULT"/>

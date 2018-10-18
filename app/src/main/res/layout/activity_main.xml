@@ -10,17 +10,18 @@
         android:background="@drawable/background">
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/colorprogressbar"
         android:layout_width="500dp"
         android:layout_height="25dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:max="100"
         android:minHeight="100dp"
         android:padding="6dp"
+        android:progress="100"
         android:paddingBottom="20dp"
-        android:layout_marginBottom="23dp" />
+        android:layout_marginBottom="150dp" />
 
     <WebView
         android:id="@+id/webview"

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +73,7 @@ public class stbTambahan extends AppCompatActivity {
     //var activity main xml
     private WebView mWebView;
     private TextView urlText;
+    private ProgressBar progressBar;
 
     public stbTambahan() throws MalformedURLException {
     }
@@ -80,8 +83,31 @@ public class stbTambahan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mWebView = (WebView) findViewById(R.id.webview);
-        loadAIDL();
-        new VersionCheck().execute();
+        progressBar  = (ProgressBar) findViewById(R.id.progressBar);
+        new ProgressTask().execute(0);
+    }
+
+    private class ProgressTask extends AsyncTask<Integer,Integer,Void>{
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setMax(100);
+        }
+
+        protected Void doInBackground(Integer... params) {
+            int start=params[0];
+            for(int i=start;i<=100;i+=50){
+                progressBar.setProgress(i);
+                SystemClock.sleep(500);
+            }
+            progressBar.setProgress(100);
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+            loadAIDL();
+            new VersionCheck().execute();
+        }
     }
 
     private class VersionCheck extends AsyncTask<Void, Void, Void> {
