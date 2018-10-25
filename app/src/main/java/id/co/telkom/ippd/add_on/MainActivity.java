@@ -1,5 +1,6 @@
 package id.co.telkom.ippd.add_on;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.SystemClock;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,6 +21,7 @@ import android.os.RemoteException;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.net.Uri;
@@ -75,16 +78,25 @@ public class  MainActivity extends AppCompatActivity {
     private WebView mWebView;
     private TextView urlText;
     private ProgressBar progressBar;
+    private TextView versionID;
+
+    private WebView mywebview;
+    private Button btnsend;
+    private EditText editText;
 
     public MainActivity() throws MalformedURLException {
     }
+    private JavaScriptInterFace javaScriptInterFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mWebView = (WebView) findViewById(R.id.webview);
         progressBar  = (ProgressBar) findViewById(R.id.progressBar);
+        versionID = (TextView) findViewById(R.id.versionID);
+        versionID.setText("Versi Aplikasi : " + currentVersion);
         new ProgressTask().execute(0);
     }
 
@@ -98,16 +110,17 @@ public class  MainActivity extends AppCompatActivity {
 
         protected Void doInBackground(Integer... params) {
             int start=params[0];
-            for(int i=start;i<=100;i+=50){
+            for(int i=start;i<=100;i+=25){
                progressBar.setProgress(i);
                SystemClock.sleep(500);
             }
-            progressBar.setProgress(100);
-            loadAIDL();
+
+
             return null;
         }
 
         protected void onPostExecute(Void result) {
+            loadAIDL();
 
         }
     }
@@ -413,19 +426,23 @@ public class  MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
+
         String title= mWebView.getTitle();
+
         int pemisah = title.indexOf("-");
         String back = title.substring(pemisah+1, title.length());
+        //Toast.makeText(getApplicationContext(),title,Toast.LENGTH_LONG).show();
+
         //==================================================================
         //Start on Pressed Code
         //==================================================================
         //Home
         //==================================================================
-        if(title.equals("Home")){
+        if(title.equals("home")){
             final Dialog dialogExit = new Dialog(MainActivity.this);
             dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogExit.setContentView(R.layout.dialogexit);
-            dialogExit.setCancelable(false);
+            dialogExit.setCancelable(true);
             TextView dialogExitText = (TextView) dialogExit.findViewById(R.id.textdialog);
             dialogExitText.setText("Apakah anda yakin ingin keluar dari aplikasi ?");
             Button dialogButtonOk = (Button) dialogExit.findViewById(R.id.buttonOK);
@@ -453,23 +470,7 @@ public class  MainActivity extends AppCompatActivity {
         //First Page
         //==================================================================
 
-        else if(title.equals("tvStorage")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-
-        else if(title.equals("stbTambahan")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-
-        else if(title.equals("wifiid")) {
+        else if(back.equals("home")){
             builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
@@ -523,15 +524,25 @@ public class  MainActivity extends AppCompatActivity {
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
-        /*//==================================================================
+        //==================================================================
+        //Back Modal
+        //==================================================================
+        else if (title.equals("wifiid-home-modal")){
+            mWebView.loadUrl("javascript:backcloseModal();");
+         }
+
+        //==================================================================
         //Back Usually
         //==================================================================
+        /*
         else if (mWebView.isFocused() && mWebView.canGoBack()) {
             mWebView.goBack();
-        }*/
+        }
+        */
         //==================================================================
         //End on Pressed Code
         //==================================================================
+
     }
 
     @Override
@@ -548,6 +559,9 @@ public class  MainActivity extends AppCompatActivity {
 
     private void callUrl (Uri uri) { //call URL
             try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    WebView.setWebContentsDebuggingEnabled(true);
+                }
                 URL url = new URL(uri.toString());
                 mWebView.getSettings().setJavaScriptEnabled(true);
                 mWebView.getSettings().setAppCacheEnabled(true);
