@@ -64,9 +64,7 @@ public class  MainActivity extends AppCompatActivity {
     public String vendor;
 
     //var url parameter
-    //public String LOAD_BASE_URL = "http://10.0.8.56/addon/";
-
-    public String LOAD_BASE_URL = "http://google.com";
+    public String LOAD_BASE_URL = "http://10.0.8.56/addon/";
     final String ID_IH = "indihome_id";
     final String Source = "source";
     Uri builtUri;
