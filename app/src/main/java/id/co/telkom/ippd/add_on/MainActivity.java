@@ -1,6 +1,5 @@
 package id.co.telkom.ippd.add_on;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.SystemClock;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.net.Uri;
+import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,8 +35,6 @@ import java.util.Map;
 
 import id.co.telkom.ippd.stbinterface.TelkomSTB;
 import ztestb.iptv.aidl.ServiceIPTVAidl;
-
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -431,7 +428,7 @@ public class  MainActivity extends AppCompatActivity {
 
         int pemisah = title.indexOf("-");
         String back = title.substring(pemisah+1, title.length());
-        //Toast.makeText(getApplicationContext(),title,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),title, Toast.LENGTH_LONG).show();
 
         //==================================================================
         //Start on Pressed Code
