@@ -95,6 +95,7 @@ public class  MainActivity extends AppCompatActivity {
         versionID = (TextView) findViewById(R.id.versionID);
         versionID.setText("Versi Aplikasi : " + currentVersion);
         new ProgressTask().execute(0);
+        //loadAIDL();
     }
 
     private class ProgressTask extends AsyncTask<Integer,Integer,Void>{
@@ -103,6 +104,7 @@ public class  MainActivity extends AppCompatActivity {
             super.onPreExecute();
             progressBar.setMax(100);
             new VersionCheck().execute();
+
         }
 
         protected Void doInBackground(Integer... params) {
@@ -110,15 +112,13 @@ public class  MainActivity extends AppCompatActivity {
             for(int i=start;i<=100;i+=25){
                progressBar.setProgress(i);
                SystemClock.sleep(500);
+
             }
-
-
             return null;
         }
 
         protected void onPostExecute(Void result) {
             loadAIDL();
-
         }
     }
 
@@ -527,6 +527,17 @@ public class  MainActivity extends AppCompatActivity {
         else if (title.equals("wifiid-home-modal")){
             mWebView.loadUrl("javascript:backcloseModal();");
          }
+        //==================================================================
+        //Back Else Condition To Home Page
+        //==================================================================
+         else{
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+
+        }
 
         //==================================================================
         //Back Usually
@@ -559,6 +570,7 @@ public class  MainActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     WebView.setWebContentsDebuggingEnabled(true);
                 }
+
                 URL url = new URL(uri.toString());
                 mWebView.getSettings().setJavaScriptEnabled(true);
                 mWebView.getSettings().setAppCacheEnabled(true);
@@ -575,7 +587,13 @@ public class  MainActivity extends AppCompatActivity {
                             dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    recreate();
+                                    if (android.os.Build.VERSION.SDK_INT >= 11){
+                                        recreate();
+                                    }else{
+                                        Intent intent = getIntent();
+                                        finish();
+                                        startActivity(intent);
+                                    }
                                 }
                             });
                         }
@@ -598,7 +616,13 @@ public class  MainActivity extends AppCompatActivity {
                         dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                recreate();
+                                if (android.os.Build.VERSION.SDK_INT >= 11){
+                                    recreate();
+                                }else{
+                                    Intent intent = getIntent();
+                                    finish();
+                                    startActivity(intent);
+                                }
                             }
                         });
                     }

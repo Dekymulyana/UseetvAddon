@@ -97,6 +97,7 @@ public class wifiID extends AppCompatActivity {
     }
 
     private class ProgressTask extends AsyncTask<Integer,Integer,Void>{
+
         protected void onPreExecute() {
             super.onPreExecute();
             progressBar.setMax(100);
@@ -197,6 +198,7 @@ public class wifiID extends AppCompatActivity {
             }
         }
     }
+
 
     private void loadAIDL () {  //FUNGSI Choose AIDL
         Log.d("NotifService", "loading AIDL");
@@ -418,11 +420,12 @@ public class wifiID extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
+
         String title= mWebView.getTitle();
+
         int pemisah = title.indexOf("-");
         String back = title.substring(pemisah+1, title.length());
-
-        //Toast.makeText(getApplicationContext(),title,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),title, Toast.LENGTH_LONG).show();
 
         //==================================================================
         //Start on Pressed Code
@@ -533,6 +536,7 @@ public class wifiID extends AppCompatActivity {
         //==================================================================
         //End on Pressed Code
         //==================================================================
+
     }
 
     @Override
@@ -552,6 +556,7 @@ public class wifiID extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 WebView.setWebContentsDebuggingEnabled(true);
             }
+
             URL url = new URL(uri.toString());
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setAppCacheEnabled(true);
@@ -568,7 +573,13 @@ public class wifiID extends AppCompatActivity {
                         dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                recreate();
+                                if (android.os.Build.VERSION.SDK_INT >= 11){
+                                    recreate();
+                                }else{
+                                    Intent intent = getIntent();
+                                    finish();
+                                    startActivity(intent);
+                                }
                             }
                         });
                     }
@@ -591,7 +602,13 @@ public class wifiID extends AppCompatActivity {
                     dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            recreate();
+                            if (android.os.Build.VERSION.SDK_INT >= 11){
+                                recreate();
+                            }else{
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+                            }
                         }
                     });
                 }
