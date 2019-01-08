@@ -60,7 +60,9 @@ public class stbTambahan extends AppCompatActivity {
     public String vendor;
 
     //var url parameter
-    public String LOAD_BASE_URL = "http://10.0.8.56/addon/stbTambahan";
+    //public String LOAD_BASE_URL = "http://10.0.8.56/addon/tvStorage";
+    public String LOAD_BASE_URL = "http://10.0.8.58/addon/tvStorage";
+
     final String ID_IH = "indihome_id";
     final String Source = "source";
     Uri builtUri;
@@ -464,7 +466,7 @@ public class stbTambahan extends AppCompatActivity {
         //==================================================================
 
         else if(back.equals("home")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -476,42 +478,42 @@ public class stbTambahan extends AppCompatActivity {
         //==================================================================
 
         else if(title.equals("detilPembelian-"+back)){
-            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("verifikasiOtp-"+back)){
-            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("completePembelian-"+back)){
-            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("gantiNomor-"+back)){
-            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("error-"+back)){
-            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("sukses-"+back)){
-            builtUri = Uri.parse("http://10.0.8.56/addon/"+back).buildUpon()
+            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -522,6 +524,17 @@ public class stbTambahan extends AppCompatActivity {
         //==================================================================
         else if (title.equals("wifiid-home-modal")){
             mWebView.loadUrl("javascript:backcloseModal();");
+        }
+        //==================================================================
+        //Back Else Condition To Home Page
+        //==================================================================
+        else{
+            builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+
         }
 
         //==================================================================
