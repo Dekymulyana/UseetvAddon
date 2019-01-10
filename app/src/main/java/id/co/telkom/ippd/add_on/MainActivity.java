@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
 
         int pemisah = title.indexOf("-");
         String back = title.substring(pemisah+1, title.length());
-       //Toast.makeText(getApplicationContext(), final_title, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Session title home: " + final_title + " URL yang anda akan akses: " + mWebView.getUrl(), Toast.LENGTH_LONG).show();
 
         //==================================================================
         //Start on Pressed Code
@@ -583,6 +583,7 @@ public class MainActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 WebView.setWebContentsDebuggingEnabled(true);
             }
+            //Toast.makeText(getApplicationContext(), "URL anda saat ini: " + mWebView.getUrl(), Toast.LENGTH_LONG).show();
 
             URL url = new URL(uri.toString());
             mWebView.getSettings().setJavaScriptEnabled(true);
