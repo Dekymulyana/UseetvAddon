@@ -433,7 +433,7 @@ public class tvStorage extends AppCompatActivity {
         //==================================================================
         //Home
         //==================================================================
-        if(title.equals("home")){
+        if(title.equals("home1")||title.equals("home2")){
             final Dialog dialogExit = new Dialog(tvStorage.this);
             dialogExit.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogExit.setContentView(R.layout.dialogexit);
@@ -465,8 +465,16 @@ public class tvStorage extends AppCompatActivity {
         //First Page
         //==================================================================
 
-        else if(back.equals("home")){
-            builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
+        else if(back.equals("home1")){
+            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+        }
+
+        else if(back.equals("home2")){
+            builtUri = Uri.parse("http://10.0.8.57/addon/").buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
