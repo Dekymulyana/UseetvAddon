@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.net.Uri;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Created by Deky's on 8/10/2018.
  */
 
-public class  MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     //var indihome ID
     private ServiceIPTVAidl zteIptvService = null;
@@ -63,10 +64,11 @@ public class  MainActivity extends AppCompatActivity {
     //var url parameter
     //public String LOAD_BASE_URL = "http://10.0.8.56/addon/";
     public String LOAD_BASE_URL = "http://10.0.8.58/addon/";
-
+    public String LOAD_HOME_URL = "";
     final String ID_IH = "indihome_id";
     final String Source = "source";
     Uri builtUri;
+    public String final_title="";
 
     //var version application
     String linkAptoide = "http://ws75.aptoide.com/api/7/getApp/store_name=useeapps/package_name=";
@@ -74,7 +76,7 @@ public class  MainActivity extends AppCompatActivity {
     String updateVersion;
 
     //var activity main xml
-    private WebView mWebView;
+    public  WebView mWebView;
     private TextView urlText;
     private ProgressBar progressBar;
     private TextView versionID;
@@ -112,8 +114,8 @@ public class  MainActivity extends AppCompatActivity {
         protected Void doInBackground(Integer... params) {
             int start=params[0];
             for(int i=start;i<=100;i+=25){
-               progressBar.setProgress(i);
-               SystemClock.sleep(500);
+                progressBar.setProgress(i);
+                SystemClock.sleep(500);
 
             }
             return null;
@@ -161,7 +163,7 @@ public class  MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                           // Toast.makeText(getApplicationContext(),"Json parsing error: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getApplicationContext(),"Json parsing error: " + e.getMessage(),Toast.LENGTH_LONG).show();
                             Log.d("NotifService", "JSON Parsing Error");
                         }
                     });
@@ -335,11 +337,11 @@ public class  MainActivity extends AppCompatActivity {
             if (fiberhomeIndihomeId != null) {
                 id_ih = SystemPropertiesProxy.get(getApplicationContext(), "sys.Indihome.username");
                 vendor = "fiberhome";
-                    builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
-                            .appendQueryParameter(ID_IH, id_ih)
-                            .appendQueryParameter(Source, vendor)
-                            .build();
-                    callUrl(builtUri);
+                builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
+                        .appendQueryParameter(ID_IH, id_ih)
+                        .appendQueryParameter(Source, vendor)
+                        .build();
+                callUrl(builtUri);
 
             }
             else{
@@ -427,10 +429,16 @@ public class  MainActivity extends AppCompatActivity {
     public void onBackPressed () {
 
         String title= mWebView.getTitle();
+        if(final_title.equals("home1")){
+            LOAD_HOME_URL="http://10.0.8.56/addon/";
+        }
+        else if (final_title.equals("home2")){
+            LOAD_HOME_URL="http://10.0.8.57/addon/";
+        }
 
         int pemisah = title.indexOf("-");
         String back = title.substring(pemisah+1, title.length());
-        //Toast.makeText(getApplicationContext(),title, Toast.LENGTH_LONG).show();
+       //Toast.makeText(getApplicationContext(), final_title, Toast.LENGTH_LONG).show();
 
         //==================================================================
         //Start on Pressed Code
@@ -469,63 +477,55 @@ public class  MainActivity extends AppCompatActivity {
         //First Page
         //==================================================================
 
-        else if(back.equals("home1")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+        else if(back.equals("home")){
+            builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
 
-        else if(back.equals("home2")){
-            builtUri = Uri.parse("http://10.0.8.57/addon/").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        
         //==================================================================
-        //Detail Flow
+        //Detail Flow Service
         //==================================================================
 
         else if(title.equals("detilPembelian-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("verifikasiOtp-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("completePembelian-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("gantiNomor-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("error-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("sukses-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -536,12 +536,12 @@ public class  MainActivity extends AppCompatActivity {
         //==================================================================
         else if (title.equals("wifiid-home-modal")){
             mWebView.loadUrl("javascript:backcloseModal();");
-         }
+        }
         //==================================================================
         //Back Else Condition To Home Page
         //==================================================================
-         else{
-            builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
+        else{
+            builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -566,64 +566,40 @@ public class  MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getApplicationContext().getSharedPreferences("Session_Title", 0).edit().clear().commit();
         System.exit(0);
     }
 
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method firs
+        getApplicationContext().getSharedPreferences("Session_Title", 0).edit().clear().commit();
         System.exit(0);
     }
 
-    private void callUrl (Uri uri) { //call URL
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    WebView.setWebContentsDebuggingEnabled(true);
-                }
+    public void callUrl (Uri uri) { //call URL
 
-                URL url = new URL(uri.toString());
-                mWebView.getSettings().setJavaScriptEnabled(true);
-                mWebView.getSettings().setAppCacheEnabled(true);
-                mWebView.setWebChromeClient(new WebChromeClient() {
-                    @Override
-                    public void onReceivedTitle(WebView view, String title) {
-                        super.onReceivedTitle(view, title);
-                        CharSequence pnotfound = "Object not found!";
-                        if (title.contains(pnotfound)) {
-                            setContentView(R.layout.layout_cant_access);
-                            Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
-                            dialogButtonRefresh2.setFocusable(true);
-                            dialogButtonRefresh2.requestFocus();
-                            dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (android.os.Build.VERSION.SDK_INT >= 11){
-                                        recreate();
-                                    }else{
-                                        Intent intent = getIntent();
-                                        finish();
-                                        startActivity(intent);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
 
-                mWebView.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
-                        webView.loadUrl(url_new);
-                        return true;
-                    }
+            URL url = new URL(uri.toString());
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setAppCacheEnabled(true);
 
-                    @Override
-                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                        setContentView(R.layout.layout_no_iptv);
-                        Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
-                        dialogButtonRefresh.setFocusable(true);
-                        dialogButtonRefresh.requestFocus();
-                        dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
+            mWebView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onReceivedTitle(WebView view, String title) {
+                    super.onReceivedTitle(view, title);
+                    CharSequence pnotfound = "Object not found!";
+
+                    if (title.contains(pnotfound)) {
+                        setContentView(R.layout.layout_cant_access);
+                        Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
+                        dialogButtonRefresh2.setFocusable(true);
+                        dialogButtonRefresh2.requestFocus();
+                        dialogButtonRefresh2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if (android.os.Build.VERSION.SDK_INT >= 11){
@@ -636,16 +612,52 @@ public class  MainActivity extends AppCompatActivity {
                             }
                         });
                     }
-
-                    public void onPageFinished(WebView view, String url) {
-                        mWebView.setVisibility(View.VISIBLE);
+                    else if(title.contains("home1")||title.contains("home2")){
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("Session_Title", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("titlesave",title);
+                        editor.commit();
+                        final_title = pref.getString("titlesave", title);
                     }
+                }
+            });
 
-                });
-                mWebView.loadUrl(uri.toString());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            mWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, String url_new) {
+                    webView.loadUrl(url_new);
+                    return true;
+                }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    setContentView(R.layout.layout_no_iptv);
+                    Button dialogButtonRefresh = (Button) findViewById(R.id.buttonRefresh);
+                    dialogButtonRefresh.setFocusable(true);
+                    dialogButtonRefresh.requestFocus();
+                    dialogButtonRefresh.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (android.os.Build.VERSION.SDK_INT >= 11){
+                                recreate();
+                            }else{
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    mWebView.setVisibility(View.VISIBLE);
+                }
+
+            });
+            mWebView.loadUrl(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+    }
 
 }

@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.net.Uri;
+import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,7 +45,7 @@ import org.json.JSONObject;
  * Created by Deky's on 8/10/2018.
  */
 
-public class wifiID extends AppCompatActivity {
+public class  wifiID extends AppCompatActivity {
 
     //var indihome ID
     private ServiceIPTVAidl zteIptvService = null;
@@ -60,12 +62,13 @@ public class wifiID extends AppCompatActivity {
     public String vendor;
 
     //var url parameter
-    //public String LOAD_BASE_URL = "http://10.0.8.56/addon/tvStorage";
-    public String LOAD_BASE_URL = "http://10.0.8.58/addon/tvStorage";
-
+    //public String LOAD_BASE_URL = "http://10.0.8.56/addon/";
+    public String LOAD_BASE_URL = "http://10.0.8.58/addon/wifiidSeamless";
+    public String LOAD_HOME_URL = "";
     final String ID_IH = "indihome_id";
     final String Source = "source";
     Uri builtUri;
+    public String final_title="";
 
     //var version application
     String linkAptoide = "http://ws75.aptoide.com/api/7/getApp/store_name=useeapps/package_name=";
@@ -73,7 +76,7 @@ public class wifiID extends AppCompatActivity {
     String updateVersion;
 
     //var activity main xml
-    private WebView mWebView;
+    public  WebView mWebView;
     private TextView urlText;
     private ProgressBar progressBar;
     private TextView versionID;
@@ -96,6 +99,7 @@ public class wifiID extends AppCompatActivity {
         versionID = (TextView) findViewById(R.id.versionID);
         versionID.setText("Versi Aplikasi : " + currentVersion);
         new ProgressTask().execute(0);
+        //loadAIDL();
     }
 
     private class ProgressTask extends AsyncTask<Integer,Integer,Void>{
@@ -104,6 +108,7 @@ public class wifiID extends AppCompatActivity {
             super.onPreExecute();
             progressBar.setMax(100);
             new VersionCheck().execute();
+
         }
 
         protected Void doInBackground(Integer... params) {
@@ -111,6 +116,7 @@ public class wifiID extends AppCompatActivity {
             for(int i=start;i<=100;i+=25){
                 progressBar.setProgress(i);
                 SystemClock.sleep(500);
+
             }
             return null;
         }
@@ -200,7 +206,6 @@ public class wifiID extends AppCompatActivity {
             }
         }
     }
-
 
     private void loadAIDL () {  //FUNGSI Choose AIDL
         Log.d("NotifService", "loading AIDL");
@@ -424,11 +429,18 @@ public class wifiID extends AppCompatActivity {
     public void onBackPressed () {
 
         String title= mWebView.getTitle();
+        if(final_title.equals("home1")){
+            LOAD_HOME_URL="http://10.0.8.56/addon/wifiidSeamless";
+        }
+        else if (final_title.equals("home2")){
+            LOAD_HOME_URL="http://10.0.8.57/addon/wifiidSeamless";
+        }
 
         int pemisah = title.indexOf("-");
         String back = title.substring(pemisah+1, title.length());
         //Toast.makeText(getApplicationContext(),title, Toast.LENGTH_LONG).show();
-//==================================================================
+
+        //==================================================================
         //Start on Pressed Code
         //==================================================================
         //Home
@@ -465,62 +477,55 @@ public class wifiID extends AppCompatActivity {
         //First Page
         //==================================================================
 
-        else if(back.equals("home1")){
-            builtUri = Uri.parse("http://10.0.8.56/addon/").buildUpon()
+        else if(back.equals("home")){
+            builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
 
-        else if(back.equals("home2")){
-            builtUri = Uri.parse("http://10.0.8.57/addon/").buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
         //==================================================================
         //Detail Flow
         //==================================================================
 
         else if(title.equals("detilPembelian-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("verifikasiOtp-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("completePembelian-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("gantiNomor-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("error-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
         }
         else if(title.equals("sukses-"+back)){
-            builtUri = Uri.parse(LOAD_BASE_URL+back).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -536,7 +541,7 @@ public class wifiID extends AppCompatActivity {
         //Back Else Condition To Home Page
         //==================================================================
         else{
-            builtUri = Uri.parse(LOAD_BASE_URL).buildUpon()
+            builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
@@ -561,16 +566,19 @@ public class wifiID extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getApplicationContext().getSharedPreferences("Session_Title", 0).edit().clear().commit();
         System.exit(0);
     }
 
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method firs
+        getApplicationContext().getSharedPreferences("Session_Title", 0).edit().clear().commit();
         System.exit(0);
     }
 
-    private void callUrl (Uri uri) { //call URL
+    public void callUrl (Uri uri) { //call URL
+
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 WebView.setWebContentsDebuggingEnabled(true);
@@ -579,11 +587,13 @@ public class wifiID extends AppCompatActivity {
             URL url = new URL(uri.toString());
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setAppCacheEnabled(true);
+
             mWebView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public void onReceivedTitle(WebView view, String title) {
                     super.onReceivedTitle(view, title);
                     CharSequence pnotfound = "Object not found!";
+
                     if (title.contains(pnotfound)) {
                         setContentView(R.layout.layout_cant_access);
                         Button dialogButtonRefresh2 = (Button) findViewById(R.id.buttonRefresh2);
@@ -601,6 +611,13 @@ public class wifiID extends AppCompatActivity {
                                 }
                             }
                         });
+                    }
+                    else if(title.contains("home1")||title.contains("home2")){
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("Session_Title", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("titlesave",title);
+                        editor.commit();
+                        final_title = pref.getString("titlesave", title);
                     }
                 }
             });
