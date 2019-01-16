@@ -42,7 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Deky's on 8/10/2018.
+ * Created by Deky's on 16/01/2019.
  */
 
 public class tvStorage extends AppCompatActivity {
@@ -477,7 +477,7 @@ public class tvStorage extends AppCompatActivity {
         //First Page
         //==================================================================
 
-        else if(back.equals("home")){
+        else if(back.equals("home1")||back.equals("home2")){
             builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
@@ -534,7 +534,7 @@ public class tvStorage extends AppCompatActivity {
         //==================================================================
         //Back Modal
         //==================================================================
-        else if (title.equals("wifiid-home-modal")){
+        else if (title.equals("wifiid-home1-modal")||title.equals("wifiid-home2-modal")){
             mWebView.loadUrl("javascript:backcloseModal();");
         }
         //==================================================================
