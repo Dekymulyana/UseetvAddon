@@ -116,7 +116,6 @@ public class tvStorage extends AppCompatActivity {
             for(int i=start;i<=100;i+=25){
                 progressBar.setProgress(i);
                 SystemClock.sleep(500);
-
             }
             return null;
         }

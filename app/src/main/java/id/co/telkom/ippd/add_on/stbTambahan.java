@@ -63,7 +63,7 @@ public class stbTambahan extends AppCompatActivity {
 
     //var url parameter
     //public String LOAD_BASE_URL = "http://10.0.8.56/addon/";
-    public String LOAD_BASE_URL = "http://10.0.8.58/addon/tvStorage";
+    public String LOAD_BASE_URL = "http://10.0.8.58/addon/stbTambahan";
     public String LOAD_HOME_URL = "";
     final String ID_IH = "indihome_id";
     final String Source = "source";
