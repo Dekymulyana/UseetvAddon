@@ -30,7 +30,6 @@
             android:name=".tvStorage"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-
             <intent-filter>
                 <action android:name="id.co.telkom.ippd.indihome.addon.tvstorage"/>
                 <category android:name="android.intent.category.DEFAULT"/>

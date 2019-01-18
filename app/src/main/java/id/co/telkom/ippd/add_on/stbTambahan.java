@@ -430,15 +430,16 @@ public class stbTambahan extends AppCompatActivity {
 
         String title= mWebView.getTitle();
         if(final_title.equals("home1")){
-            LOAD_HOME_URL="http://10.0.8.56/addon/stbTambahan";
+            LOAD_HOME_URL="http://10.0.8.56/addon/";
         }
         else if (final_title.equals("home2")){
-            LOAD_HOME_URL="http://10.0.8.57/addon/stbTambahan";
+            LOAD_HOME_URL="http://10.0.8.57/addon/";
         }
-
         int pemisah = title.indexOf("-");
-        String back = title.substring(pemisah+1, title.length());
-        //Toast.makeText(getApplicationContext(),title, Toast.LENGTH_LONG).show();
+        String front= title.substring(0,pemisah+1);
+        String back = title.substring(pemisah+1,title.length());
+
+        //Toast.makeText(getApplicationContext(), "URL Anda: " + mWebView.getTitle(),Toast.LENGTH_LONG).show();
 
         //==================================================================
         //Start on Pressed Code
@@ -476,67 +477,34 @@ public class stbTambahan extends AppCompatActivity {
         //==================================================================
         //First Page
         //==================================================================
-
-        else if(back.equals("home1")||back.equals("home2")){
+        else if(back.equals("home")&&title.equals(front+back)){
             builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
                     .build();
             mWebView.loadUrl(builtUri.toString());
+            mWebView.loadUrl("javascript:jQuery('.loader').show();");
         }
 
-        //==================================================================
-        //Detail Flow
-        //==================================================================
-
-        else if(title.equals("detilPembelian-"+back)){
-            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("verifikasiOtp-"+back)){
-            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("completePembelian-"+back)){
-            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("gantiNomor-"+back)){
-            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("error-"+back)){
-            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
-        else if(title.equals("sukses-"+back)){
-            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
-                    .appendQueryParameter(ID_IH, id_ih)
-                    .appendQueryParameter(Source, vendor)
-                    .build();
-            mWebView.loadUrl(builtUri.toString());
-        }
         //==================================================================
         //Back Modal
         //==================================================================
-        else if (title.equals("wifiid-home1-modal")||title.equals("wifiid-home2-modal")){
+        else if (title.equals(front+"home"+"-modal")){
             mWebView.loadUrl("javascript:backcloseModal();");
         }
+
+        //==================================================================
+        //Detail Flow Service
+        //==================================================================
+        else if(title.equals(front+back)){
+            builtUri = Uri.parse(LOAD_HOME_URL+back).buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
+            mWebView.loadUrl("javascript:jQuery('.loader').show();");
+        }
+
         //==================================================================
         //Back Else Condition To Home Page
         //==================================================================
@@ -548,7 +516,6 @@ public class stbTambahan extends AppCompatActivity {
             mWebView.loadUrl(builtUri.toString());
 
         }
-
         //==================================================================
         //Back Usually
         //==================================================================
@@ -557,11 +524,11 @@ public class stbTambahan extends AppCompatActivity {
             mWebView.goBack();
         }
         */
-        //==================================================================
+        //========= =========================================================
         //End on Pressed Code
         //==================================================================
-
     }
+
 
     @Override
     public void onDestroy() {

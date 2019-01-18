@@ -433,7 +433,6 @@ public class MainActivity extends AppCompatActivity {
         else if (final_title.equals("home2")){
             LOAD_HOME_URL="http://10.0.8.57/addon/";
         }
-        //Read layanan title (two "-")
         int pemisah = title.indexOf("-");
         String front= title.substring(0,pemisah+1);
         String back = title.substring(pemisah+1,title.length());
@@ -471,13 +470,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             dialogExit.show();
-
         }
 
         //==================================================================
         //First Page
         //==================================================================
-        else if(back.equals("home")){
+        else if(back.equals("home")&&title.equals(front+back)){
             builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
                     .appendQueryParameter(ID_IH, id_ih)
                     .appendQueryParameter(Source, vendor)
@@ -503,13 +501,19 @@ public class MainActivity extends AppCompatActivity {
                     .build();
             mWebView.loadUrl(builtUri.toString());
             mWebView.loadUrl("javascript:jQuery('.loader').show();");
-
         }
 
         //==================================================================
         //Back Else Condition To Home Page
         //==================================================================
+        else{
+            builtUri = Uri.parse(LOAD_HOME_URL).buildUpon()
+                    .appendQueryParameter(ID_IH, id_ih)
+                    .appendQueryParameter(Source, vendor)
+                    .build();
+            mWebView.loadUrl(builtUri.toString());
 
+        }
         //==================================================================
         //Back Usually
         //==================================================================
